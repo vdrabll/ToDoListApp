@@ -13,7 +13,7 @@ class ToDoPresenter: ToDoPresenterProtocol {
     
     var view: ToDoViewProtocol
     var coreDataProvider: CoreDataProvider
-    var item = [String]()
+    var tasksTitles = [String]()
     
     init(view: ToDoViewProtocol, coreDataProvider: CoreDataProviderImplimetation) {
         self.view = view
@@ -21,32 +21,40 @@ class ToDoPresenter: ToDoPresenterProtocol {
         fetchAllTasks()
     }
     
-    func markComplited() {
-        print("im here")
+    func markComplited() -> Bool{
+        return true
     }
     
-    func presentAlert() {
+    func presentAlert() {    // MARK:  работает но выглядит не по солиду надо исправлять
         let vc = view as? ToDoViewController
         vc!.presentAlert { task in
-            self.item.append(task)
+            self.tasksTitles.append(task)
             self.coreDataProvider.save(task: task)
+            DispatchQueue.main.async {
+                vc!.tableView.reloadData()
+            }
         }
     }
     
     func fetchAllTasks() {
         self.coreDataProvider.fetchTasks { task in
-            for i in task {
-                self.item.append(i.task!)
+            for title in task {
+                self.tasksTitles.append(title.task!)
             }
         }
     }
     
-    func configure(cell: ToDoTableViewCell, row: Int) {
-        cell.display(task: self.item[row])
-        }
-    
-    func deleteTask(at indexPath: IndexPath) {
-        // some code here later
-        
+    func deleteTask(task: String, index: Int) -> Bool {
+        self.tasksTitles.remove(at: index)
+       let result = coreDataProvider.delete(task: task, index: index)
+        if result == true {
+            return result
+        } else {
+            return false
         }
     }
+    
+    func configure(cell: ToDoTableViewCell, row: Int) {
+        cell.display(task: self.tasksTitles[row])
+    }
+}

@@ -15,9 +15,8 @@ class ToDoViewController: UITableViewController, ToDoViewProtocol  {
     override func viewDidLoad() {
         super.viewDidLoad()
         confugurator.configure(ToDoViewController: self)
-        tableView.register(ToDoTableViewCell.self, forCellReuseIdentifier: ToDoTableViewCell.identifire)
-        setTitle(title: " " )
-      
+        tableView.register(ToDoTableViewCell.self, forCellReuseIdentifier: String(describing: ToDoTableViewCell.self))
+        setTitle(title: "")
     }
     
     func setTitle(title: String) {
@@ -34,7 +33,7 @@ class ToDoViewController: UITableViewController, ToDoViewProtocol  {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.item.count
+        return presenter.tasksTitles.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -44,12 +43,23 @@ class ToDoViewController: UITableViewController, ToDoViewProtocol  {
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete ///
+        return .delete
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let task = (tableView.visibleCells[indexPath.item] as! ToDoTableViewCell).task.text else {
+            fatalError("task not found")
+        }
         if editingStyle == .delete {
-            return presenter.deleteTask( at: indexPath)
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            if presenter.deleteTask(task: task, index: indexPath.item) == true {
+                tableView.endUpdates()
+            } else {
+                fatalError("some problems happend when deliting task was performing")
+            }
+        }
+            return
         }
     }
-}
+

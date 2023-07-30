@@ -18,6 +18,7 @@ class ToDoTableViewCell: UITableViewCell, ToDoTableViewCellProtocol {
     
     var task: UILabel = {
         var lable = UILabel()
+        // TODO: make 4 rows 
         lable.translatesAutoresizingMaskIntoConstraints = false
         lable.font.withSize(15.0)
         lable.frame = CGRect(x: 10, y: 10, width: 300, height: 30)
