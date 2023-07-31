@@ -11,34 +11,33 @@ import UIKit
 
 protocol CoreDataProvider {
     func save(task: String)
-    func delete(task: String, index: Int) -> Bool
+    func delete(id: UUID)
     func fetchTasks(completionHandler: @escaping ([Task]) -> Void)
     func update(task: String) -> Bool
     func update(index: Int, newStatus: Bool) -> Bool
 }
 
 class CoreDataProviderImplimetation: CoreDataProvider {
-    
     var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func delete(task: String, index: Int) -> Bool {
+    func delete(id: UUID) -> Bool {
         var data = [Task]()
         // MARK: не очень красиво надо бы как то улучшить
         guard let entity = NSEntityDescription.entity(forEntityName: "Task", in: context) else {
-          fatalError("entity not found")
+            fatalError("entity not found")
         }
         self.fetchTasks { task in
             data = task
         }
         
-       do {
-           self.context.delete(data[index])
-           try context.save()
-           return true
-       } catch let error as NSError {
-           print(String(describing: error.localizedDescription))
-           return false
-       }
+        do {
+//            self.context.delete(data[index])
+            try context.save()
+            return true
+        } catch let error as NSError {
+            print(String(describing: error.localizedDescription))
+            return false
+        }
     }
     
     func save(task: String) {
@@ -62,14 +61,14 @@ class CoreDataProviderImplimetation: CoreDataProvider {
     func fetchTasks(completionHandler: @escaping ([Task]) -> Void) {
         do {
             let item = try context.fetch(Task.fetchRequest())
-           completionHandler(item)
+            completionHandler(item)
         } catch {
             print(error.localizedDescription)
         }
     }
     
     func update(task: String) -> Bool {
-            return false
+        return false
     }
     
     func update(index: Int, newStatus: Bool) -> Bool {
@@ -78,14 +77,12 @@ class CoreDataProviderImplimetation: CoreDataProvider {
         fetchTasks { data in
             tasks = data
         }
-        
-        
         let task = tasks[index]
         task.isCheked = newStatus
         
-    do {
+        do {
             try context.save()
-        return true
+            return true
         } catch let error as NSError {
             print(String(describing: error.localizedDescription))
         }

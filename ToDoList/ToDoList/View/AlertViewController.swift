@@ -28,11 +28,3 @@ extension ToDoViewController {
         super.present(alert, animated: true)
     }
 }
-
-
-/*DispatchQueue.main.async {
- var currentItem = UserDefaults.standard.stringArray(forKey: "item") ?? []
- UserDefaults.standard.setValue(currentItem,
-                                forKey: "item") ///save enter in array
- self?.saveTask(title: text)
-//                        reloadData()*/

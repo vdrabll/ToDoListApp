@@ -17,6 +17,7 @@ class ToDoTableViewCell: UITableViewCell, ToDoTableViewCellProtocol {
     
     static let identifire = "ToDoTableViewCell"
     
+    
     var delegate: ToDoTableViewCellDelegate?
     
     var task: UILabel = {
@@ -57,15 +58,15 @@ class ToDoTableViewCell: UITableViewCell, ToDoTableViewCellProtocol {
         case UIColor.clear:
             self.delegate?.taskChecked(status: true, title: task.text!)
             
-            case UIColor.black:
+        case UIColor.black:
             self.delegate?.taskChecked(status: false, title: task.text!)
-
-            case .none:
-                break
-            case .some(_):
+            
+        case .none:
+            break
+        case .some(_):
             self.delegate?.taskChecked(status: true, title: task.text!)
-            }
         }
+    }
     
     func display(task: String) {
         self.task.text = task
@@ -75,7 +76,6 @@ class ToDoTableViewCell: UITableViewCell, ToDoTableViewCellProtocol {
         switch status {
         case false:
             self.checkbox.backgroundColor = .clear
-            self.task.attributedText = NSAttributedString(string: task.text!)
             
         case true:
             self.checkbox.backgroundColor = .black

@@ -9,14 +9,14 @@ import Foundation
 import CoreData
 import UIKit
 
-struct Tasks {
-    var tittle: String
-    var id: Bool
+struct TaskModel {
+    var title: String
+    var isChecked: Bool
 }
 
 class ToDoPresenter: ToDoPresenterProtocol {
     
-    var tasksTitles =  [Tasks]()
+    var tasksTitles =  [TaskModel]()
     var view: ToDoViewProtocol = ToDoViewController()
     var coreDataProvider: CoreDataProvider
     
@@ -26,22 +26,21 @@ class ToDoPresenter: ToDoPresenterProtocol {
         fetchAllTasks()
     }
     
-    func markComplited(title: String, id: Bool) {
+    func markComplited(title: String, isChecked: Bool) {
         var titleIndex = Int()
         
-        for (index, tasks) in tasksTitles.enumerated() {
-            if tasks.tittle == title {
+        for (index, tasks) in tasksTitles.enumerated() {  // TODO: исправить нахождение задачи по id
+            if tasks.title == title {
                 titleIndex = index
             }
         }
-        coreDataProvider.update(index: titleIndex, newStatus: id)
-
+        coreDataProvider.update(index: titleIndex, newStatus: isChecked)
     }
     
     func presentAlert() {    // MARK:  работает но выглядит не по солиду надо исправлять
         let vc = view as? ToDoViewController
         vc!.presentAlert { task in
-            self.tasksTitles.append(Tasks(tittle: task, id: false))
+            self.tasksTitles.append(TaskModel(title: task, isChecked: false))
             self.coreDataProvider.save(task: task)
             self.view.updateTableView()
         }
@@ -50,14 +49,14 @@ class ToDoPresenter: ToDoPresenterProtocol {
     func fetchAllTasks() {
         self.coreDataProvider.fetchTasks { task in
             for title in task {
-                self.tasksTitles.append(Tasks(tittle: title.task!, id: title.isCheked))
+                self.tasksTitles.append(TaskModel(title: title.task!, isChecked: title.isCheked))
             }
         }
     }
     
     func deleteTask(task: String, index: Int) -> Bool {
         self.tasksTitles.remove(at: index)
-       let result = coreDataProvider.delete(task: task, index: index)
+        let result = coreDataProvider.delete(id: task, index)
         if result == true {
             return result
         } else {
@@ -66,7 +65,7 @@ class ToDoPresenter: ToDoPresenterProtocol {
     }
     
     func configure(cell: ToDoTableViewCell, row: Int) {
-        cell.display(task: self.tasksTitles[row].tittle)
-        cell.display(chekbox: self.tasksTitles[row].id)
+        cell.display(task: self.tasksTitles[row].title)
+        cell.display(chekbox: self.tasksTitles[row].isChecked)
     }
 }

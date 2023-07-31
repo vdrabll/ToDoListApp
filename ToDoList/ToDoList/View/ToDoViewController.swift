@@ -40,7 +40,7 @@ class ToDoViewController: UITableViewController, ToDoViewProtocol, ToDoTableView
     }
     // MARK: Cell delegate methods
     func taskChecked(status: Bool, title: String) {
-        presenter.markComplited(title: title, id: status)
+        presenter.markComplited(title: title, isChecked: status)
     }
     
     func updateTask(title: String) {
@@ -51,7 +51,7 @@ class ToDoViewController: UITableViewController, ToDoViewProtocol, ToDoTableView
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.tasksTitles.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ToDoTableViewCell.identifire, for: indexPath) as! ToDoTableViewCell
         presenter!.configure(cell: cell , row: indexPath.row)
@@ -76,7 +76,7 @@ class ToDoViewController: UITableViewController, ToDoViewProtocol, ToDoTableView
                 fatalError("some problems happend when deliting task was performing")
             }
         }
-            return
-        }
+        return
     }
+}
 
