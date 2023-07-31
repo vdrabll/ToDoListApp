@@ -11,6 +11,8 @@ import UIKit
 protocol ToDoViewProtocol {
     var presenter: ToDoPresenterProtocol! { get set }
     func setTitle(title: String)
+    func updateTableView()
+    
 }
 
 

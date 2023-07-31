@@ -9,11 +9,16 @@ import Foundation
 import CoreData
 import UIKit
 
+struct Tasks {
+    var tittle: String
+    var id: Bool
+}
+
 class ToDoPresenter: ToDoPresenterProtocol {
     
-    var view: ToDoViewProtocol
+    var tasksTitles =  [Tasks]()
+    var view: ToDoViewProtocol = ToDoViewController()
     var coreDataProvider: CoreDataProvider
-    var tasksTitles = [String]()
     
     init(view: ToDoViewProtocol, coreDataProvider: CoreDataProviderImplimetation) {
         self.view = view
@@ -21,25 +26,31 @@ class ToDoPresenter: ToDoPresenterProtocol {
         fetchAllTasks()
     }
     
-    func markComplited() -> Bool{
-        return true
+    func markComplited(title: String, id: Bool) {
+        var titleIndex = Int()
+        
+        for (index, tasks) in tasksTitles.enumerated() {
+            if tasks.tittle == title {
+                titleIndex = index
+            }
+        }
+        coreDataProvider.update(index: titleIndex, newStatus: id)
+
     }
     
     func presentAlert() {    // MARK:  работает но выглядит не по солиду надо исправлять
         let vc = view as? ToDoViewController
         vc!.presentAlert { task in
-            self.tasksTitles.append(task)
+            self.tasksTitles.append(Tasks(tittle: task, id: false))
             self.coreDataProvider.save(task: task)
-            DispatchQueue.main.async {
-                vc!.tableView.reloadData()
-            }
+            self.view.updateTableView()
         }
     }
     
     func fetchAllTasks() {
         self.coreDataProvider.fetchTasks { task in
             for title in task {
-                self.tasksTitles.append(title.task!)
+                self.tasksTitles.append(Tasks(tittle: title.task!, id: title.isCheked))
             }
         }
     }
@@ -55,6 +66,7 @@ class ToDoPresenter: ToDoPresenterProtocol {
     }
     
     func configure(cell: ToDoTableViewCell, row: Int) {
-        cell.display(task: self.tasksTitles[row])
+        cell.display(task: self.tasksTitles[row].tittle)
+        cell.display(chekbox: self.tasksTitles[row].id)
     }
 }

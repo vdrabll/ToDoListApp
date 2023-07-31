@@ -7,9 +7,10 @@
 
 import UIKit
 
-class ToDoViewController: UITableViewController, ToDoViewProtocol  {
-    var presenter: ToDoPresenterProtocol!
+class ToDoViewController: UITableViewController, ToDoViewProtocol, ToDoTableViewCellDelegate {
     
+    // MARK: Class properties
+    var presenter: ToDoPresenterProtocol!
     var confugurator = ToDoConfiguratorImplementation()
     
     override func viewDidLoad() {
@@ -32,13 +33,29 @@ class ToDoViewController: UITableViewController, ToDoViewProtocol  {
         super.viewWillAppear(animated)
     }
     
+    func updateTableView() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    // MARK: Cell delegate methods
+    func taskChecked(status: Bool, title: String) {
+        presenter.markComplited(title: title, id: status)
+    }
+    
+    func updateTask(title: String) {
+        print("im gonna be ready soon")
+    }
+    
+    // MARK: Table View Delegate Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.tasksTitles.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ToDoTableViewCell.identifire, for: indexPath)
-        presenter!.configure(cell: cell as! ToDoTableViewCell, row: indexPath.row)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ToDoTableViewCell.identifire, for: indexPath) as! ToDoTableViewCell
+        presenter!.configure(cell: cell , row: indexPath.row)
+        cell.delegate = self
         return cell
     }
     

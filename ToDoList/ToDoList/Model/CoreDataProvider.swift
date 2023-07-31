@@ -13,9 +13,12 @@ protocol CoreDataProvider {
     func save(task: String)
     func delete(task: String, index: Int) -> Bool
     func fetchTasks(completionHandler: @escaping ([Task]) -> Void)
+    func update(task: String) -> Bool
+    func update(index: Int, newStatus: Bool) -> Bool
 }
 
 class CoreDataProviderImplimetation: CoreDataProvider {
+    
     var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     func delete(task: String, index: Int) -> Bool {
@@ -39,7 +42,7 @@ class CoreDataProviderImplimetation: CoreDataProvider {
     }
     
     func save(task: String) {
-        if task == "" {
+        if task == nil {
             return
         }
         guard let entity = NSEntityDescription.entity(forEntityName: "Task", in: context) else {
@@ -47,6 +50,7 @@ class CoreDataProviderImplimetation: CoreDataProvider {
         }
         let taskObject = Task(entity: entity, insertInto: context)
         taskObject.task = task
+        taskObject.isCheked = false
         
         do {
             try context.save()
@@ -58,9 +62,33 @@ class CoreDataProviderImplimetation: CoreDataProvider {
     func fetchTasks(completionHandler: @escaping ([Task]) -> Void) {
         do {
             let item = try context.fetch(Task.fetchRequest())
-            completionHandler(item)
+           completionHandler(item)
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    func update(task: String) -> Bool {
+            return false
+    }
+    
+    func update(index: Int, newStatus: Bool) -> Bool {
+        var tasks = [Task]()
+        
+        fetchTasks { data in
+            tasks = data
+        }
+        
+        
+        let task = tasks[index]
+        task.isCheked = newStatus
+        
+    do {
+            try context.save()
+        return true
+        } catch let error as NSError {
+            print(String(describing: error.localizedDescription))
+        }
+        return true
     }
 }

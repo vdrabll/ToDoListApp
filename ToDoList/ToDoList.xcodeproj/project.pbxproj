@@ -19,6 +19,7 @@
 		5115FEDB2A745B310030FE30 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5115FEDA2A745B310030FE30 /* AlertViewController.swift */; };
 		5115FEDD2A74B7DF0030FE30 /* CoreDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5115FEDC2A74B7DF0030FE30 /* CoreDataProvider.swift */; };
 		5115FEE02A7523710030FE30 /* ToDoConfugurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5115FEDF2A7523710030FE30 /* ToDoConfugurator.swift */; };
+		519A33CB2A76B65500DB0CEC /* ToDoTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519A33CA2A76B65500DB0CEC /* ToDoTableViewCellDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		5115FEDA2A745B310030FE30 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		5115FEDC2A74B7DF0030FE30 /* CoreDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataProvider.swift; sourceTree = "<group>"; };
 		5115FEDF2A7523710030FE30 /* ToDoConfugurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoConfugurator.swift; sourceTree = "<group>"; };
+		519A33CA2A76B65500DB0CEC /* ToDoTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCellDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 			children = (
 				5115FED42A7431C60030FE30 /* ToDoViewProtocol.swift */,
 				5115FED62A74322A0030FE30 /* ToDoPresenterProtocol.swift */,
+				519A33CA2A76B65500DB0CEC /* ToDoTableViewCellDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				5115FED12A742F220030FE30 /* ToDoTableViewCell.swift in Sources */,
 				5115FEDB2A745B310030FE30 /* AlertViewController.swift in Sources */,
 				5115FEE02A7523710030FE30 /* ToDoConfugurator.swift in Sources */,
+				519A33CB2A76B65500DB0CEC /* ToDoTableViewCellDelegate.swift in Sources */,
 				5115FED52A7431C60030FE30 /* ToDoViewProtocol.swift in Sources */,
 				5112F740280EA1BD002F89D4 /* SceneDelegate.swift in Sources */,
 				5115FED72A74322A0030FE30 /* ToDoPresenterProtocol.swift in Sources */,

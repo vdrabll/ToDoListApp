@@ -10,10 +10,10 @@ import UIKit
 
 protocol ToDoPresenterProtocol {
     var view: ToDoViewProtocol { get set }
-    var tasksTitles: [String] { get set }
+    var tasksTitles: [Tasks] { get set }
     
     func presentAlert() -> Void
-    func markComplited() -> Bool
+    func markComplited(title: String, id: Bool) 
     func deleteTask(task: String, index: Int) -> Bool
     func configure(cell: ToDoTableViewCell, row: Int) -> Void
 }
